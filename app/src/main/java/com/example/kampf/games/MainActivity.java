@@ -3,11 +3,11 @@ package com.example.kampf.games;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
-import android.widget.Toast;
 
-public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener{
+public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
 
     private BottomNavigationView bottomNavigationView;
 
@@ -19,45 +19,70 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         bottomNavigationView = findViewById(R.id.bottomNavigation);
         bottomNavigationView.setOnNavigationItemSelectedListener(this);
 
+        if (savedInstanceState == null) {
+
+            GamesFragment gamesFragment = new GamesFragment();
+
+            replaceFragment(gamesFragment);
+
+        }
+
     }
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
         if (item.getItemId() == bottomNavigationView.getSelectedItemId()) {
-
             return true;
-
         }
 
-        String message = "";
-
+        Fragment fragment;
 
         switch (item.getItemId()) {
 
             case R.id.nav_games:
 
-                message = "Games";
+                fragment = new GamesFragment();
+
                 break;
 
             case R.id.nav_companies:
 
-                message = "Companies";
+                fragment = new CompaniesFragment();
+
                 break;
 
             case R.id.nav_favorite:
 
-                message = "Favorite";
+                fragment = new FavoriteFragment();
+
                 break;
 
             case R.id.nav_settings:
 
-                message = "Settings";
+                fragment = new SettingsFragment();
+
+                break;
+
+            default:
+                fragment = new Fragment();
+
                 break;
 
         }
 
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+        replaceFragment(fragment);
         return true;
     }
+
+    private void replaceFragment(android.support.v4.app.Fragment fragment) {
+
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragmentContainer, fragment)
+                .commit();
+
+    }
+
 }
+
