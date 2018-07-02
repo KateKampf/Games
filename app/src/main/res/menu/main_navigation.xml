@@ -1,4 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <item
+        android:id="@+id/nav_games"
+        android:icon="@drawable/ic_games"
+        android:title="@string/games"/>
+
+    <item
+        android:id="@+id/nav_companies"
+        android:icon="@drawable/ic_companies"
+        android:title="@string/games"/>
+
+    <item
+        android:id="@+id/nav_favorite"
+        android:icon="@drawable/ic_favorite"
+        android:title="@string/games"/>
+
+    <item
+        android:id="@+id/nav_settings"
+        android:icon="@drawable/ic_settings"
+        android:title="@string/games"/>
+
 </menu>
