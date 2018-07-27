@@ -11,6 +11,8 @@ import com.example.kampf.games.games.GamesFragment;
 
 public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
 
+    private static final String TAG = MainActivity.class.getSimpleName();
+
     private BottomNavigationView bottomNavigationView;
 
     @Override
@@ -28,6 +30,12 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
             replaceFragment(gamesFragment);
 
         }
+
+        gsonSandbox();
+
+    }
+
+    private void gsonSandbox() {
 
     }
 

@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.kampf.games.R;
+import com.example.kampf.games.network.GbObjectResponse;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -16,7 +17,7 @@ import java.util.List;
 
 public class GamesAdapter extends RecyclerView.Adapter<GamesAdapter.ViewHolder>{
 
-    private List<Game> games = new ArrayList<>();
+    private List<GbObjectResponse> games = new ArrayList<>();
 
     @NonNull
     @Override
@@ -29,8 +30,8 @@ public class GamesAdapter extends RecyclerView.Adapter<GamesAdapter.ViewHolder>{
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
-        Game game = games.get(position);
-        Picasso.get().load(game.getImgUrl()).into(holder.ivPicture);
+        GbObjectResponse game = games.get(position);
+        Picasso.get().load(game.getImage().getSmallUrl()).into(holder.ivPicture);
         holder.tvName.setText(game.getName());
         holder.tvDeck.setText(game.getDeck());
 
@@ -41,14 +42,14 @@ public class GamesAdapter extends RecyclerView.Adapter<GamesAdapter.ViewHolder>{
         return games.size();
     }
 
-    public void addAll(List<Game> gamesToAdd) {
+    public void addAll(List<GbObjectResponse> gamesToAdd) {
 
         games.addAll(gamesToAdd);
         notifyDataSetChanged();
 
     }
 
-    public void replaceAll(List<Game> gamesToReplace) {
+    public void replaceAll(List<GbObjectResponse> gamesToReplace) {
 
         games.clear();
         games.addAll(gamesToReplace);
