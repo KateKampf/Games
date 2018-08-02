@@ -21,6 +21,7 @@ import com.example.kampf.games.network.GbObjectResponse;
 import com.example.kampf.games.network.GbObjectsListResponse;
 import com.example.kampf.games.network.GiantBombService;
 import com.example.kampf.games.network.RestApi;
+import com.example.kampf.games.search.GamesSearchActivity;
 
 import java.util.Random;
 
@@ -54,6 +55,12 @@ public class GamesFragment extends Fragment implements Toolbar.OnMenuItemClickLi
         setupToolbar(view);
         setupRecyclerView(view);
         progressBar = view.findViewById(R.id.progressBar);
+        view.findViewById(R.id.fabSearch).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getContext(), GamesSearchActivity.class));
+            }
+        });
         loadRandomGames();
 
 

@@ -86,7 +86,7 @@ public class GamesAdapter extends RecyclerView.Adapter<GamesAdapter.ViewHolder>{
 
     }
 
-    interface Callback {
+    public interface Callback {
         void onGameClick(GbObjectResponse game);
     }
 
