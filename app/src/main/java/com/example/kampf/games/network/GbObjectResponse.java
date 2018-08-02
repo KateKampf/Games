@@ -5,6 +5,12 @@ public class GbObjectResponse {
     private String name;
     private String deck;
     private Image image;
+    private String guid;
+    private String description;
+
+    public String getDescription() {
+        return description;
+    }
 
     public Image getImage() {
         return image;
@@ -16,6 +22,10 @@ public class GbObjectResponse {
 
     public String getDeck() {
         return deck;
+    }
+
+    public String getGuid() {
+        return guid;
     }
 
     public static class Image {

@@ -1,5 +1,6 @@
 package com.example.kampf.games.games;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -7,28 +8,37 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.kampf.games.R;
+import com.example.kampf.games.gamedetails.GameDetailsActivity;
+import com.example.kampf.games.network.GbObjectResponse;
 import com.example.kampf.games.network.GbObjectsListResponse;
 import com.example.kampf.games.network.GiantBombService;
 import com.example.kampf.games.network.RestApi;
+
+import java.util.Random;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class GamesFragment extends Fragment implements Toolbar.OnMenuItemClickListener {
+public class GamesFragment extends Fragment implements Toolbar.OnMenuItemClickListener, GamesAdapter.Callback {
 
     private static final String TAG = "33__";
+    private static final int TOTAL_GAMES_COUNT = 60000;
 
+    private GiantBombService service = RestApi.createService(GiantBombService.class);
+    private GamesAdapter adapter = new GamesAdapter(this);
+    private Random random = new Random();
     private RecyclerView rvGames;
-    private GamesAdapter adapter = new GamesAdapter();
+    private ProgressBar progressBar;
+    @Nullable private Call<GbObjectsListResponse> call;
 
     @Nullable
     @Override
@@ -43,15 +53,15 @@ public class GamesFragment extends Fragment implements Toolbar.OnMenuItemClickLi
 
         setupToolbar(view);
         setupRecyclerView(view);
+        progressBar = view.findViewById(R.id.progressBar);
+        loadRandomGames();
 
-        GiantBombService service = RestApi.createService(GiantBombService.class);
 
         Call<GbObjectsListResponse> call = service.getGames(10, 228);
 
         Callback<GbObjectsListResponse> callback = new Callback<GbObjectsListResponse>() {
             @Override
             public void onResponse(Call<GbObjectsListResponse> call, Response<GbObjectsListResponse> response) {
-                Log.d(TAG, "onResponse");
                 GbObjectsListResponse gbObjectsListResponse = response.body();
                 if (gbObjectsListResponse != null) {
 
@@ -62,13 +72,67 @@ public class GamesFragment extends Fragment implements Toolbar.OnMenuItemClickLi
 
             @Override
             public void onFailure(Call<GbObjectsListResponse> call, Throwable t) {
-                Log.d(TAG, "onFailure");
             }
         };
 
         call.enqueue(callback);
 
+    }
 
+    @Override
+    public void onGameClick(GbObjectResponse game) {
+        Intent intent = GameDetailsActivity.makeIntent(getContext(), game);
+        startActivity(intent);
+    }
+
+    private void loadRandomGames() {
+
+        if (call != null && call.isExecuted()) {
+            return;
+        }
+        showLoading();
+        int limit = 10;
+        int offset = random.nextInt(TOTAL_GAMES_COUNT - limit + 1);
+        call = service.getGames(limit, offset);
+        //noinspection ConstantConditions
+        call.enqueue(new Callback<GbObjectsListResponse>() {
+            @Override
+            public void onResponse(Call<GbObjectsListResponse> call, Response<GbObjectsListResponse> response) {
+                showContent();
+                GamesFragment.this.call = call.clone();
+                GbObjectsListResponse gbObjectsListResponse = response.body();
+                if (gbObjectsListResponse != null) {
+                    adapter.replaceAll(gbObjectsListResponse.getResults());
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<GbObjectsListResponse> call, Throwable t) {
+
+                showContent();
+                GamesFragment.this.call = call.clone();
+                if (!call.isCanceled()) {
+
+                    Toast.makeText(getContext(), R.string.error, Toast.LENGTH_SHORT).show();
+
+                }
+
+            }
+        });
+    }
+
+    private void showLoading() {
+
+        rvGames.setVisibility(View.GONE);
+        progressBar.setVisibility(View.VISIBLE);
+
+    }
+
+    private void showContent() {
+
+        progressBar.setVisibility(View.GONE);
+        rvGames.setVisibility(View.VISIBLE);
 
     }
 
@@ -94,11 +158,19 @@ public class GamesFragment extends Fragment implements Toolbar.OnMenuItemClickLi
 
         if (item.getItemId() == R.id.refresh) {
 
-            Toast.makeText(getContext(), R.string.refresh, Toast.LENGTH_SHORT).show();
+            loadRandomGames();
             return true;
 
         }
 
         return false;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        if (call != null) {
+            call.cancel();
+        }
     }
 }

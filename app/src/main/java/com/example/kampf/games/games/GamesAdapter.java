@@ -18,13 +18,27 @@ import java.util.List;
 public class GamesAdapter extends RecyclerView.Adapter<GamesAdapter.ViewHolder>{
 
     private List<GbObjectResponse> games = new ArrayList<>();
+    private final Callback callback;
+
+    public GamesAdapter(Callback callback) {
+        this.callback = callback;
+    }
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         View itemView = inflater.inflate(R.layout.item_game, parent, false);
-        return new ViewHolder(itemView);
+        final ViewHolder holder = new ViewHolder(itemView);
+        itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                GbObjectResponse game = games.get(holder.getAdapterPosition());
+                callback.onGameClick(game);
+            }
+        });
+
+        return holder;
     }
 
     @Override
@@ -70,6 +84,10 @@ public class GamesAdapter extends RecyclerView.Adapter<GamesAdapter.ViewHolder>{
             tvDeck = itemView.findViewById(R.id.tvDeck);
         }
 
+    }
+
+    interface Callback {
+        void onGameClick(GbObjectResponse game);
     }
 
 }

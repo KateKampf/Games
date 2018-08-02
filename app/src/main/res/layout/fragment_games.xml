@@ -8,6 +8,8 @@
 
     <include layout="@layout/toolbar"/>
 
+    <include layout="@layout/progress_bar"/>
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rvGames"
         android:layout_width="match_parent"
