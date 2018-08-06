@@ -7,11 +7,11 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
-import com.example.kampf.games.CompaniesFragment;
 import com.example.kampf.games.FavoriteFragment;
 import com.example.kampf.games.R;
-import com.example.kampf.games.settings.SettingsFragment;
+import com.example.kampf.games.companies.CompaniesFragment;
 import com.example.kampf.games.games.GamesFragment;
+import com.example.kampf.games.settings.SettingsFragment;
 
 public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
 

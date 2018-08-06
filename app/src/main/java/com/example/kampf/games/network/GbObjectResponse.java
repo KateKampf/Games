@@ -7,6 +7,16 @@ public class GbObjectResponse {
     private Image image;
     private String guid;
     private String description;
+    private String locationCountry;
+    private String locationCity;
+
+    public String getLocationCountry() {
+        return locationCountry;
+    }
+
+    public String getLocationCity() {
+        return locationCity;
+    }
 
     public String getDescription() {
         return description;

@@ -63,13 +63,16 @@ public class SettingsFragment extends Fragment {
 
     private void setOnItemClickListeners() {
 
-        spGamesAmount.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        spGamesAmount.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String amountString = parent.getItemAtPosition(position).toString();
                 int amountInt = Integer.parseInt(amountString);
                 editor.putInt(PrefsConst.SETTINGS_GAMES_AMOUNT, amountInt).apply();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
 
             }
         });

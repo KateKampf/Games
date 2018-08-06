@@ -9,16 +9,16 @@
     <item
         android:id="@+id/nav_companies"
         android:icon="@drawable/ic_companies"
-        android:title="@string/games"/>
+        android:title="@string/companies"/>
 
     <item
         android:id="@+id/nav_favorite"
         android:icon="@drawable/ic_favorite"
-        android:title="@string/games"/>
+        android:title="@string/favorite"/>
 
     <item
         android:id="@+id/nav_settings"
         android:icon="@drawable/ic_settings"
-        android:title="@string/games"/>
+        android:title="@string/settings"/>
 
 </menu>
