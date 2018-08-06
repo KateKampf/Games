@@ -8,4 +8,5 @@
     <string name="error">Error!</string>
     <string name="no_description">No description</string>
     <string name="search">Search</string>
+    <string name="games_amount">Games amount:</string>
 </resources>

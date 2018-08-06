@@ -1,7 +1,9 @@
 package com.example.kampf.games.games;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -15,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.example.kampf.games.PrefsConst;
 import com.example.kampf.games.R;
 import com.example.kampf.games.gamedetails.GameDetailsActivity;
 import com.example.kampf.games.network.GbObjectResponse;
@@ -40,6 +43,7 @@ public class GamesFragment extends Fragment implements Toolbar.OnMenuItemClickLi
     private RecyclerView rvGames;
     private ProgressBar progressBar;
     @Nullable private Call<GbObjectsListResponse> call;
+    private int gamesAmount;
 
     @Nullable
     @Override
@@ -52,6 +56,8 @@ public class GamesFragment extends Fragment implements Toolbar.OnMenuItemClickLi
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+        gamesAmount = preferences.getInt(PrefsConst.SETTINGS_GAMES_AMOUNT, PrefsConst.SETTINGS_DEFAULT_AMOUNT);
         setupToolbar(view);
         setupRecyclerView(view);
         progressBar = view.findViewById(R.id.progressBar);
@@ -98,9 +104,8 @@ public class GamesFragment extends Fragment implements Toolbar.OnMenuItemClickLi
             return;
         }
         showLoading();
-        int limit = 10;
-        int offset = random.nextInt(TOTAL_GAMES_COUNT - limit + 1);
-        call = service.getGames(limit, offset);
+        int offset = random.nextInt(TOTAL_GAMES_COUNT - gamesAmount + 1);
+        call = service.getGames(gamesAmount, offset);
         //noinspection ConstantConditions
         call.enqueue(new Callback<GbObjectsListResponse>() {
             @Override

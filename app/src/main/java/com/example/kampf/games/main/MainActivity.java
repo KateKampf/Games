@@ -1,4 +1,4 @@
-package com.example.kampf.games;
+package com.example.kampf.games.main;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -7,6 +7,10 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
+import com.example.kampf.games.CompaniesFragment;
+import com.example.kampf.games.FavoriteFragment;
+import com.example.kampf.games.R;
+import com.example.kampf.games.settings.SettingsFragment;
 import com.example.kampf.games.games.GamesFragment;
 
 public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
@@ -46,7 +50,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
             return true;
         }
 
-        Fragment fragment;
+        final Fragment fragment;
 
         switch (item.getItemId()) {
 

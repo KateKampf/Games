@@ -4,13 +4,50 @@
              android:layout_height="match_parent"
     >
 
-    <TextView
-        android:layout_width="wrap_content"
+    <include layout="@layout/toolbar"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="SettingsFragment"
-        android:textColor="#000"
-        android:textSize="29sp"
-        />
+        android:layout_marginTop="?attr/actionBarSize"
+        android:fillViewport="true"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingEnd="16dp"
+            android:paddingStart="16dp"
+            >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:orientation="horizontal"
+                >
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/games_amount"
+                    android:textSize="18sp"
+                    />
+
+                <Spinner
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/spGamesAmount"
+                    android:entries="@array/amount_option"
+                    />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+    </ScrollView>
 
 </FrameLayout>
