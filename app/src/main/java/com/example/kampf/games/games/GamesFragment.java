@@ -176,6 +176,7 @@ public class GamesFragment extends Fragment implements Toolbar.OnMenuItemClickLi
         }
 
         return false;
+
     }
 
     @Override

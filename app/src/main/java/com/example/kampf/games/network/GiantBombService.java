@@ -18,4 +18,11 @@ public interface GiantBombService {
 
     @GET("companies/?api_key=395804244fdd9539db55a52a0c95943f00bf7f70&format=json&field_list=deck,image,name,location_country,location_city")
     Call<GbObjectsListResponse> getCompanies(@Query("limit") int limit, @Query("offset") int offset);
+
+    @GET("company/{guid}/?api_key=395804244fdd9539db55a52a0c95943f00bf7f70&format=json&field_list=description")
+    Call<GbSingleObjectResponse> getCompanyDetails(@Path("guid") String guid);
+
+    @GET("search/?api_key=395804244fdd9539db55a52a0c95943f00bf7f70&format=json&field_list=deck,image,name,location_country,location_city,guid&resources=company")
+    Call<GbObjectsListResponse> searchCompanies(@Query("query") String query, @Query("limit") int limit);
+
 }

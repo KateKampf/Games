@@ -1,6 +1,9 @@
 package com.example.kampf.games.companies;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -14,10 +17,12 @@ import android.widget.Toast;
 
 import com.example.kampf.games.PrefsConst;
 import com.example.kampf.games.R;
+import com.example.kampf.games.companydetails.CompanyDetailsActivity;
 import com.example.kampf.games.network.GbObjectResponse;
 import com.example.kampf.games.network.GbObjectsListResponse;
 import com.example.kampf.games.network.GiantBombService;
 import com.example.kampf.games.network.RestApi;
+import com.example.kampf.games.search.CompaniesSearchActivity;
 
 import java.util.Random;
 
@@ -47,7 +52,8 @@ public class CompaniesFragment extends android.support.v4.app.Fragment implement
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
 
-        companiesAmount = PrefsConst.SETTINGS_DEFAULT_AMOUNT;
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+        companiesAmount = sharedPreferences.getInt(PrefsConst.SETTINGS_COMPANIES_AMOUNT, PrefsConst.SETTINGS_DEFAULT_AMOUNT);
         setupToolbar(view);
         setupRecyclerView(view);
         progressBar = view.findViewById(R.id.progressBar);
@@ -55,7 +61,7 @@ public class CompaniesFragment extends android.support.v4.app.Fragment implement
         view.findViewById(R.id.fabSearch).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getContext(), "No Search code for companies yet!", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(getContext(), CompaniesSearchActivity.class));
             }
         });
 
@@ -127,7 +133,8 @@ public class CompaniesFragment extends android.support.v4.app.Fragment implement
     @Override
     public void onCompanyClick(GbObjectResponse company) {
 
-        Toast.makeText(getContext(), "No code yet!", Toast.LENGTH_SHORT).show();
+        Intent intent = CompanyDetailsActivity.makeIntent(getContext(), company);
+        startActivity(intent);
 
     }
 

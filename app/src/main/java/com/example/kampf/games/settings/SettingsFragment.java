@@ -25,6 +25,7 @@ public class SettingsFragment extends Fragment {
     private SharedPreferences sharedPreferences;
     private SharedPreferences.Editor editor;
     private Spinner spGamesAmount;
+    private Spinner spCompaniesAmount;
 
     @Nullable
     @Override
@@ -41,6 +42,7 @@ public class SettingsFragment extends Fragment {
         editor = sharedPreferences.edit();
         ((Toolbar) view.findViewById(R.id.toolbar)).setTitle(R.string.settings);
         spGamesAmount = view.findViewById(R.id.spGamesAmount);
+        spCompaniesAmount = view.findViewById(R.id.spCompaniesAmount);
         setSelections();
         setOnItemClickListeners();
 
@@ -50,6 +52,9 @@ public class SettingsFragment extends Fragment {
 
         int gamesAmount = sharedPreferences.getInt(PrefsConst.SETTINGS_GAMES_AMOUNT, PrefsConst.SETTINGS_DEFAULT_AMOUNT);
         spGamesAmount.setSelection(getAmountIndex(gamesAmount));
+
+        int companiesAmount = sharedPreferences.getInt(PrefsConst.SETTINGS_COMPANIES_AMOUNT, PrefsConst.SETTINGS_DEFAULT_AMOUNT);
+        spGamesAmount.setSelection(getAmountIndex(companiesAmount));
 
     }
 
@@ -69,6 +74,20 @@ public class SettingsFragment extends Fragment {
                 String amountString = parent.getItemAtPosition(position).toString();
                 int amountInt = Integer.parseInt(amountString);
                 editor.putInt(PrefsConst.SETTINGS_GAMES_AMOUNT, amountInt).apply();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        spCompaniesAmount.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String amountString = parent.getItemAtPosition(position).toString();
+                int amountInt = Integer.parseInt(amountString);
+                editor.putInt(PrefsConst.SETTINGS_COMPANIES_AMOUNT, amountInt).apply();
             }
 
             @Override

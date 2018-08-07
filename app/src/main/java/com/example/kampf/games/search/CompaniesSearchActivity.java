@@ -14,8 +14,8 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.kampf.games.R;
-import com.example.kampf.games.gamedetails.GameDetailsActivity;
-import com.example.kampf.games.games.GamesAdapter;
+import com.example.kampf.games.companies.CompaniesAdapter;
+import com.example.kampf.games.companydetails.CompanyDetailsActivity;
 import com.example.kampf.games.network.GbObjectResponse;
 import com.example.kampf.games.network.GbObjectsListResponse;
 import com.example.kampf.games.network.GiantBombService;
@@ -25,13 +25,12 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-
-public class GamesSearchActivity extends AppCompatActivity implements GamesAdapter.Callback, View.OnClickListener {
+public class CompaniesSearchActivity extends AppCompatActivity implements CompaniesAdapter.Callback, View.OnClickListener {
 
     private final GiantBombService service = RestApi.createService(GiantBombService.class);
     private Handler handler = new Handler();
-    private GamesAdapter adapter = new GamesAdapter(this);
-    private RecyclerView rvGames;
+    private CompaniesAdapter adapter = new CompaniesAdapter(this);
+    private RecyclerView rvCompanies;
     private ProgressBar progressBar;
     @Nullable private Call<GbObjectsListResponse> call;
 
@@ -39,13 +38,13 @@ public class GamesSearchActivity extends AppCompatActivity implements GamesAdapt
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_search_games);
+        setContentView(R.layout.activity_search_companies);
         findViewById(R.id.btnBack).setOnClickListener(this);
         progressBar = findViewById(R.id.progressBar);
-        rvGames = findViewById(R.id.rvGames);
+        rvCompanies = findViewById(R.id.rvCompanies);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
-        rvGames.setAdapter(adapter);
-        rvGames.setLayoutManager(layoutManager);
+        rvCompanies.setAdapter(adapter);
+        rvCompanies.setLayoutManager(layoutManager);
 
         EditText etSearch = findViewById(R.id.etSearch);
         etSearch.addTextChangedListener(new TextWatcher() {
@@ -61,69 +60,63 @@ public class GamesSearchActivity extends AppCompatActivity implements GamesAdapt
 
             @Override
             public void afterTextChanged(final Editable s) {
-
-                handler.removeCallbacksAndMessages(null);
+                handler.removeCallbacksAndMessages(this);
                 handler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        searchGames(s.toString(), 10);
+                        searchCompanies(s.toString(), 10);
                     }
                 }, 400);
 
             }
         });
+
     }
 
-    private void searchGames(String query, int limit) {
+    public void searchCompanies(String query, int limit) {
         if (query.isEmpty()) {
             return;
-            }
+        }
 
         showLoading();
 
         if (call != null) {
             call.cancel();
-            }
+        }
 
-        call = service.searchGames(query, limit);
-        //noinspection ConstantConditions
+        call = service.searchCompanies(query, limit);
         call.enqueue(new Callback<GbObjectsListResponse>() {
             @Override
             public void onResponse(Call<GbObjectsListResponse> call, Response<GbObjectsListResponse> response) {
-
                 showContent();
-
                 if (response.body() != null) {
                     //noinspection ConstantConditions
                     adapter.replaceAll(response.body().getResults());
-
                 }
-
             }
 
             @Override
             public void onFailure(Call<GbObjectsListResponse> call, Throwable t) {
                 showContent();
-                Toast.makeText(GamesSearchActivity.this, R.string.error, Toast.LENGTH_SHORT).show();
-
+                Toast.makeText(CompaniesSearchActivity.this, R.string.error, Toast.LENGTH_SHORT).show();
             }
         });
 
     }
 
     private void showContent() {
-        rvGames.setVisibility(View.VISIBLE);
         progressBar.setVisibility(View.GONE);
+        rvCompanies.setVisibility(View.VISIBLE);
     }
 
     private void showLoading() {
-        rvGames.setVisibility(View.GONE);
         progressBar.setVisibility(View.VISIBLE);
+        rvCompanies.setVisibility(View.GONE);
     }
 
     @Override
-    public void onGameClick(GbObjectResponse game) {
-        startActivity(GameDetailsActivity.makeIntent(this, game));
+    public void onCompanyClick(GbObjectResponse company) {
+        startActivity(CompanyDetailsActivity.makeIntent(this, company));
     }
 
     @Override
